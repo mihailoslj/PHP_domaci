@@ -53,7 +53,7 @@
       <h4 class = "mt-2 text-primary">Svi zaposleni u bazi!</h4>
     </div>
     <div class="col-lg-6">
-        <button type = "button" class = "btn btn-primary m-1 float-right"><i class="fas fa-user-plus fa-lg"></i>
+        <button type = "button" class = "btn btn-primary m-1 float-right" data-toggle= "modal" data-target= "#addModal"><i class="fas fa-user-plus fa-lg"></i>
         &nbsp;Dodaj novog korisnika</button>
         <a href="#" class ="btn btn-success m-1 float-right"><i class="fas fa-table fa-lg"></i>&nbsp;Eksportuj u Excel</a>
     </div>
@@ -73,13 +73,66 @@
               <th>Akcija</th>
             </tr>
           </thead>
+          <tbody>
+            <?php for($i = 1; $i < 200; $i++): ?>
+            <tr class = "text-center text-secondary">
+              <td><?= $i ?></td>
+              <td>user <?= $i ?></td>
+              <td>title <?= $i ?></td>
+              <td>email.<?= $i ?>@gmail.com</td>
+              <td>064324235435</td>
+              <td>
+                <a href="#" title = "View Details" class = "text-success"><i class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
+                <a href="#" title = "Edit" class = "text-primary"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
+                <a href="#" title = "Delete" class = "text-danger"><i class="fas fa-trash-alt fa-lg"></i></a>
+              </td>
+            </tr>
+            <?php endfor ?>
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-
+  
   <hr class = "my-1">
 </div>
+
+  <!-- Dodavanje novog korisnika -->
+  <div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Dodaj novog korisnika</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body px-4">
+          <form action="" method = "post" id = "form-data">
+            <div class="form-group">
+              <input type="text" name="fname" class = "form-control" placeholder = "Ime" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="lname" class = "form-control" placeholder = "Prezime" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="email" class = "form-control" placeholder = "Email" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="phone" class = "form-control" placeholder = "Telefon" required >
+            </div>
+            <div class="form-group">
+              <input type="submit" name = "insert" id = "insert" value = "Dodaj korisnika"
+              class = "btn btn-danger btn-block">
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 <!-- jQuery library -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 
@@ -91,5 +144,10 @@
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.12.1/datatables.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $("table").DataTable();
+  });
+</script>
 </body>
 </html>
