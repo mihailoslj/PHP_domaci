@@ -61,35 +61,8 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <div class = "table-responsive" id="showUser">
-        <table class = "table table-striped table-sm table-bordered">
-          <thead>
-            <tr class = "text-center">
-              <th>ID</th>
-              <th>Ime</th>
-              <th>Prezime</th>
-              <th>Email</th>
-              <th>Telefon</th>
-              <th>Akcija</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php for($i = 1; $i < 200; $i++): ?>
-            <tr class = "text-center text-secondary">
-              <td><?= $i ?></td>
-              <td>user <?= $i ?></td>
-              <td>title <?= $i ?></td>
-              <td>email.<?= $i ?>@gmail.com</td>
-              <td>064324235435</td>
-              <td>
-                <a href="#" title = "View Details" class = "text-success"><i class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
-                <a href="#" title = "Edit" class = "text-primary"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
-                <a href="#" title = "Delete" class = "text-danger"><i class="fas fa-trash-alt fa-lg"></i></a>
-              </td>
-            </tr>
-            <?php endfor ?>
-          </tbody>
-        </table>
+      <div class = "table-responsive" id="showUser">  <!-- showUser koristim u ajax pozivu, pogledaj dole -->
+      
       </div>
     </div>
   </div>
@@ -108,7 +81,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
-        <!-- Modal body -->
+        <!-- Modal body, "Dodaj novog korisnika" -->
         <div class="modal-body px-4">
           <form action="" method = "post" id = "form-data">
             <div class="form-group">
@@ -125,7 +98,7 @@
             </div>
             <div class="form-group">
               <input type="submit" name = "insert" id = "insert" value = "Dodaj korisnika"
-              class = "btn btn-danger btn-block">
+              class = "btn btn-danger btn-block"><!--  insert koristim u ajax pozivu, pogledaj dole -->
             </div>
           </form>
         </div>
@@ -134,7 +107,10 @@
     </div>
   </div>
 <!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
 
 <!-- Popper JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -146,7 +122,45 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type = "text/javascript">
   $(document).ready(function(){
-    $("table").DataTable();
+
+    // fja preko koje obavljam ajax poziv da nam vrati sve korisnike
+    function showAllUsers() {
+      $.ajax({
+        url: "action.php",
+        type: "POST",
+        data: {action: "view"},
+        success: function(response){
+          // console.log(response);
+          $("#showUser").html(response);
+          $("table").DataTable({
+               order: [0, 'desc']
+          });
+        }
+      });   
+    }
+    showAllUsers();
+
+
+    //ajax poziv ka action.php da bi dugme 'Dodaj novog korisnika' uradilo upravo to  
+    $("#insert").click(function(e){
+      if($("#form-data")[0].checkValidity()){ //ne znam sto sam ovo radio iskr, nasao bagfix na StackOverflow
+        e.preventDefault(); //zaustavlja submitovanje forme
+
+        $.ajax({
+          url: "action.php",
+          type: "POST",
+          data: $("#form-data").serialize() + "&action = insert", //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
+          success: function(response) {
+            Swal.fire({
+                              title: 'Kontakt je uspesno dodat!',
+                              icon: 'success'
+                          })
+                          $("#addModal").modal('hide');
+                          $("#form-data")[0].reset();
+          }
+        });
+      }
+    })
   });
 </script>
 </body>
