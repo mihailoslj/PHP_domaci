@@ -28,9 +28,13 @@
                     <td>'.$row['email'].'</td>
                     <td>'.$row['phone'].'</td>
                     <td>
-                    <a href="#" title = "View Details" class = "text-success"><i class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
-                    <a href="#" title = "Edit" class = "text-primary"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
-                    <a href="#" title = "Delete" class = "text-danger"><i class="fas fa-trash-alt fa-lg"></i></a>
+                    <a href="#" title = "View Details" class = "text-success infoBtn" id = "'.$row['id'].'"><i class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
+                    
+                    <a href="#" title = "Edit" class = "text-primary editBtn" data-toggle = "modal" data-target = "#editModal"
+                     id = "'.$row['id'].'"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
+                    
+                    <a href="#" title = "Delete" class = "text-danger delBtn"><i class="fas fa-trash-alt fa-lg"id = "'.$row['id'].'">
+                    </i></a>
                     </tr></td>
                 ';
             }
@@ -50,6 +54,24 @@
         $phone = $_POST['phone'];
 
         $db -> insert($fname, $lname, $email, $phone);
+    }
+
+    if(isset($_POST['edit_id'])){
+        $id = $_POST['edit_id'];
+
+
+        $row = $db->getUserById($id);
+        echo json_encode($row);
+    }
+
+    if(isset($_POST['action']) && $_POST['action'] == "update") {
+        $id = $_POST['id'];
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+
+        $db -> update($id, $fname, $lname, $email, $phone);
     }
 
 ?>

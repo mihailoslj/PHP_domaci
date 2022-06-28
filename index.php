@@ -106,6 +106,44 @@
       </div>
     </div>
   </div>
+
+  <!-- Izmena postojeceg korisnika (struktura je ista kao za dodavanje, samo su odredjeni IDjevi izmenjeni--> 
+  <div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Izmeni korisnicke podatke</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body px-4">
+          <form action="" method = "post" id = "edit-form-data">
+            <input type="hidden" name = "id" id = "id">
+            <div class="form-group">
+              <input type="text" name="fname" class = "form-control" id= "fname" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="lname" class = "form-control" id = "lname" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="email" class = "form-control" id = "email" required >
+            </div>
+            <div class="form-group">
+              <input type="text" name="phone" class = "form-control" id = "phone" required >
+            </div>
+            <div class="form-group">
+              <input type="submit" name = "update" id = "update" value = "Izmeni podatke"
+              class = "btn btn-primary btn-block">
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 <!-- jQuery library -->
 <script
   src="https://code.jquery.com/jquery-3.6.0.js"
@@ -143,13 +181,13 @@
     //ajax poziv ka action.php da bi dugme 'Dodaj novog korisnika' uradilo upravo to  
     $("#insert").click(function(e){
       if($("#form-data")[0].checkValidity()){ //ne znam sto sam ovo radio iskr, nasao bagfix na StackOverflow
-        e.preventDefault(); //zaustavlja submitovanje forme
+        e.preventDefault(); //zaustavlja rifresovanje stranice
 
-        
+
         $.ajax({
           url: "action.php",
           type: "POST",
-          data: $("#form-data").serialize() + &action="insert", //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
+          data: $("#form-data").serialize() + "&action=insert",  //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
           success: function(response) {
             Swal.fire({ //pop-up 
                         title: 'Kontakt je uspesno dodat!',
@@ -161,8 +199,56 @@
           }
         });
       }
-    })
+    });
+    
+    //izmena podataka korisnika
+    $("body").on("click", ".editBtn", function(e) {
+      e.preventDefault(); //zaustavlja rifresovanje stranice
+
+      var edit_id = $(this).attr('id'); //uzimam id korisnika kome nameravam da ((promenim podatke
+      $.ajax({
+        url:"action.php",
+        type:"POST",
+        data: {'edit_id':edit_id},
+        success:function(response) {
+           pom = JSON.parse(response); //json objekat iz odgovora parsiramo u JS objekat
+           console.log(pom);
+            $('#id').val(pom.id);
+            $('#fname').val(pom.first_name);
+            $('#lname').val(pom.last_name);
+            $('#email').val(pom.email);
+            $('#phone').val(pom.phone);
+        }
+      });
+
+    });
+    
+    //update ajax poziv
+    $("#update").click(function(e){
+      if($("#edit-form-data")[0].checkValidity()){ //ne znam sto sam ovo radio iskr, nasao bagfix na StackOverflow
+        e.preventDefault(); //zaustavlja rifresovanje stranice
+
+
+        $.ajax({
+          url: "action.php",
+          type: "POST",
+          data: $("#edit-form-data").serialize() + "&action=update",  //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
+          success: function(response) {
+            Swal.fire({ //pop-up 
+                        title: 'Kontakt je uspesno azuriran!',
+                        icon: 'success'
+                      })
+                  $("#editModal").modal('hide');
+                  $("#edit-form-data")[0].reset();
+                  showAllUsers(); //da bi azuriranu listu korisnika odmah
+          }
+        });
+      }
+    });
   });
+  
+  
+
 </script>
 </body>
 </html>

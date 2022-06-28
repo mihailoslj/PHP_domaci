@@ -43,13 +43,14 @@
         }
         //vraca korisnika na osnovu ID
         public function getUserById($id) {
-            $sql = "SELECT * FROM php_baza_korisnika.users where id = :id";
-            $stmt = $this -> conn -> prepare($sql);
-            $stmt -> execute(['id' -> $id]);
-            $result = $stmt -> fetch(PDO::FETCH_ASSOC);
+            $sql = "SELECT * FROM php_baza_korisnika.users WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt -> execute(['id'=>$id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $result;
         }
+
 
         public function update($id, $fname, $lname, $email, $phone) {
             $sql = "UPDATE php_baza_korisnika.users SET first_name = :fname, last_name = :lname, email = :email, phone = :phone
