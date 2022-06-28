@@ -4,11 +4,11 @@
     $db = new dataBase();
 
     if(isset($_POST['action']) && $_POST['action'] == "view"){
-        $uotput = '';
+        $output = '';
         $data = $db ->read(); //svi record-i iz baze
         
         if($db->totalRowCount() > 0) {
-            $uotput .= ' <table class = "table table-striped table-sm table-bordered">
+            $output .= ' <table class = "table table-striped table-sm table-bordered">
             <thead>
               <tr class = "text-center">
                 <th>ID</th>
@@ -21,7 +21,7 @@
             </thead>
             <tbody>';
             foreach($data as $row) {
-                $uotput .= '<tr class = "text-center text-secondary">
+                $output .= '<tr class = "text-center text-secondary">
                     <td>'.$row['id'].'</td>
                     <td>'.$row['first_name'].'</td>
                     <td>'.$row['last_name'].'</td>
@@ -35,8 +35,8 @@
                 ';
             }
 
-            $uotput .= '</tbody></table>';
-            echo $uotput;
+            $output .= '</tbody></table>';
+            echo $output;
         }
         else{
             echo '<h3 class = "text-center text-secondary mt-5">Nema korisnika u bazi :( </h3>';

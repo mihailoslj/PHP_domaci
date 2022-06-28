@@ -140,23 +140,24 @@
     }
     showAllUsers();
 
-
     //ajax poziv ka action.php da bi dugme 'Dodaj novog korisnika' uradilo upravo to  
     $("#insert").click(function(e){
       if($("#form-data")[0].checkValidity()){ //ne znam sto sam ovo radio iskr, nasao bagfix na StackOverflow
         e.preventDefault(); //zaustavlja submitovanje forme
 
+        
         $.ajax({
           url: "action.php",
           type: "POST",
-          data: $("#form-data").serialize() + "&action = insert", //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
+          data: $("#form-data").serialize() + &action="insert", //selialize ce da vrati podatke (iz forme koju pokrece dugme) kao array
           success: function(response) {
-            Swal.fire({
-                              title: 'Kontakt je uspesno dodat!',
-                              icon: 'success'
-                          })
-                          $("#addModal").modal('hide');
-                          $("#form-data")[0].reset();
+            Swal.fire({ //pop-up 
+                        title: 'Kontakt je uspesno dodat!',
+                        icon: 'success'
+                      })
+                  $("#addModal").modal('hide');
+                  $("#form-data")[0].reset();
+                  showAllUsers(); //da bi azuriranu listu korisnika odmah
           }
         });
       }

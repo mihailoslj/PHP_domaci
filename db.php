@@ -17,8 +17,8 @@
 
 
         public function insert($fname, $lname, $email, $phone){
-            $sql = "INSERT INTO php_baza_korisnika.users(id,first_name, last_name, email, phone) VALUES 
-            (12,:fname, :lname, :email, :phone)";
+            $sql = "INSERT INTO php_baza_korisnika.users(first_name, last_name, email, phone) VALUES 
+            (:fname, :lname, :email, :phone)";
 
             //statment 
             $stmt = $this -> conn -> prepare($sql);
