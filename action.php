@@ -33,7 +33,7 @@
                     <a href="#" title = "Edit" class = "text-primary editBtn" data-toggle = "modal" data-target = "#editModal"
                      id = "'.$row['id'].'"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
                     
-                    <a href="#" title = "Delete" class = "text-danger delBtn"><i class="fas fa-trash-alt fa-lg"id = "'.$row['id'].'">
+                    <a href="#" title = "Delete" class = "text-danger delBtn" id = "'.$row['id'].'"><i class="fas fa-trash-alt fa-lg">
                     </i></a>
                     </tr></td>
                 ';
@@ -72,6 +72,12 @@
         $phone = $_POST['phone'];
 
         $db -> update($id, $fname, $lname, $email, $phone);
+    }
+    
+    if(isset($_POST['del_id'])){
+        $id = $_POST['del_id'];
+
+        $db -> delete($id);
     }
 
 ?>

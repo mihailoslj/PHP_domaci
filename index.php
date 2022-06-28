@@ -245,6 +245,43 @@
         });
       }
     });
+
+    //ajax zahtev za brisanje korisnika
+
+    $("body").on("click", ".delBtn", function(e){
+      e.preventDefault();
+
+      var tr = $(this).closest('tr'); //uzimam red samo da bih napravio vizuelni efekat da pocrveni kad se obrise korisnik
+      var del_id = $(this).attr('id'); //uzima id od korisnika koji se nalazi u istom redu kao i pritisnuto dugme
+      console.log(del_id);
+      Swal.fire({
+            title: 'Da li ste sigurni?',
+            text: "Necete moci da opozovete ovu radnju!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Da!'
+          }).then((result) => {
+          if (result.isConfirmed) {
+              $.ajax({
+                url: "action.php",
+                type: "POST",
+                data: {del_id:del_id},
+                success:function(response){
+                  
+                  tr.css('background-color','#ff6666');
+                  Swal.fire(
+                    'Obrisan',
+                    'Uspesno obrisan korisnik',
+                    'success'
+                  )
+                  showAllUsers();
+                }
+              });
+            }
+          })
+    });
   });
   
   
