@@ -3,6 +3,7 @@
     require_once 'db.php';
     $db = new dataBase();
 
+    //prikazuje sve korisnike u bazi kada se ucita main stranica
     if(isset($_POST['action']) && $_POST['action'] == "view"){
         $output = '';
         $data = $db ->read(); //svi record-i iz baze
@@ -28,8 +29,7 @@
                     <td>'.$row['email'].'</td>
                     <td>'.$row['phone'].'</td>
                     <td>
-                    <a href="#" title = "View Details" class = "text-success infoBtn" id = "'.$row['id'].'"><i class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
-                    
+              
                     <a href="#" title = "Edit" class = "text-primary editBtn" data-toggle = "modal" data-target = "#editModal"
                      id = "'.$row['id'].'"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;&nbsp;
                     
@@ -78,6 +78,28 @@
         $id = $_POST['del_id'];
 
         $db -> delete($id);
+    }
+
+    if(isset($_GET['export']) && $_GET['export'] == 'excel') {
+        header("Content-Type: application/xls");
+        header("Content-Disposition: attachment; filename = users.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0"); 
+
+        $data = $db -> read();
+        echo '<table border="1">';
+        echo '<tr><th>ID</th><th>Ime</th><th>Prezime</th><th>Email</th><th>Telefon</th></tr>';
+
+        foreach($data as $row){
+            echo '<tr>
+                <td>'.$row['id'].'</td>
+                <td>'.$row['first_name'].'</td>
+                <td>'.$row['last_name'].'</td>
+                <td>'.$row['email'].'</td>
+                <td>'.$row['phone'].'</td>
+            </tr>';
+        }
+        echo '</table>';    
     }
 
 ?>
