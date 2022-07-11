@@ -21,22 +21,7 @@
   </button>
 
   <!-- Navbar links -->
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav ml-auto ">
-    <li class="nav-item">
-        <a class="nav-link" href="#">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Blog</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-      </li>
-    </ul>
-  </div>
+  
 </nav> 
 
 <div class="container">
@@ -256,7 +241,7 @@
       var tr = $(this).closest('tr'); //uzimam red samo da bih napravio vizuelni efekat da pocrveni kad se obrise korisnik
       var del_id = $(this).attr('id'); //uzima id od korisnika koji se nalazi u istom redu kao i pritisnuto dugme
       console.log(del_id);
-      Swal.fire({
+      Swal.fire({   //preuzeo sa https://sweetalert2.github.io/
             title: 'Da li ste sigurni?',
             text: "Necete moci da opozovete ovu radnju!",
             icon: 'warning',
